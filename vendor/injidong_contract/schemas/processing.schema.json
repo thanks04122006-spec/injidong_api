@@ -1,0 +1,165 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+        "not_ready"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "input",
+        "point_cloud",
+        "volume"
+      ]
+    },
+    "point_cloud": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "minLength": 1
+            },
+            "key": {
+              "enum": [
+                "points_m"
+              ]
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "unit": {
+              "enum": [
+                "m"
+              ]
+            },
+            "frame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "point_count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "file",
+            "key",
+            "sha256",
+            "unit",
+            "frame",
+            "point_count"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "volume_m3": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      ]
+    },
+    "volume_method": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "valid_depth_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "provenance_kind": {
+      "enum": [
+        "real",
+        "synthetic"
+      ]
+    },
+    "config_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "frame_id",
+    "status",
+    "stage",
+    "point_cloud",
+    "volume_m3",
+    "volume_method",
+    "assumptions",
+    "valid_depth_ratio",
+    "provenance_kind",
+    "config_version",
+    "errors",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Injidong processing v1.0.0"
+}

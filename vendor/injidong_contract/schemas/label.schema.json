@@ -1,0 +1,107 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specimen_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ground_truth_weight_g": {
+      "type": "number",
+      "minimum": 0
+    },
+    "measurement_time": {
+      "type": "object",
+      "properties": {
+        "ns": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          ]
+        },
+        "clock_domain": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "sensor",
+                "host_receive",
+                "synthetic",
+                "replay_host"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "ns",
+        "clock_domain",
+        "origin"
+      ],
+      "additionalProperties": false
+    },
+    "instrument_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instrument_resolution_g": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "measurement_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance_kind": {
+      "enum": [
+        "real",
+        "synthetic"
+      ]
+    },
+    "evidence": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "session_id",
+    "specimen_id",
+    "ground_truth_weight_g",
+    "measurement_time",
+    "instrument_id",
+    "instrument_resolution_g",
+    "measurement_method",
+    "provenance_kind",
+    "evidence"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Injidong label v1.0.0"
+}

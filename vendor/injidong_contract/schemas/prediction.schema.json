@@ -1,0 +1,115 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+        "not_ready"
+      ]
+    },
+    "predicted_weight_g": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "number",
+          "minimum": 0
+        }
+      ]
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "feature_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance_kind": {
+      "enum": [
+        "real",
+        "synthetic"
+      ]
+    },
+    "quality": {
+      "enum": [
+        "unknown",
+        "pass",
+        "fail"
+      ]
+    },
+    "quality_policy_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "frame_id",
+    "status",
+    "predicted_weight_g",
+    "model_id",
+    "feature_version",
+    "provenance_kind",
+    "quality",
+    "quality_policy_id",
+    "errors",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Injidong prediction v1.0.0"
+}

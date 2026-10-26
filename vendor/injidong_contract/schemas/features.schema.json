@@ -1,0 +1,90 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specimen_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "volume_m3": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "volume_method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "material": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "provenance_kind": {
+      "enum": [
+        "real",
+        "synthetic"
+      ]
+    },
+    "pose_features": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "tilt_rad": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "tilt_rad"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "feature_version": {
+      "enum": [
+        "volume_only_v1",
+        "volume_material_v1",
+        "volume_pose_v1"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "frame_id",
+    "specimen_id",
+    "volume_m3",
+    "volume_method",
+    "material",
+    "provenance_kind",
+    "pose_features",
+    "feature_version"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Injidong features v1.0.0"
+}

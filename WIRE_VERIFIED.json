@@ -1,0 +1,49 @@
+{
+  "sample_bytes": 30661636,
+  "sample_sha256": "e87e810013b49756ab450349baa10ef939f7a1ddd0f68e4308fc5144efcf0735",
+  "upload_status": 201,
+  "duplicate_status": 200,
+  "first_page": {
+    "items": [
+      {
+        "session_id": "d405_1792750256071",
+        "storage_status": "stored",
+        "zip_size_bytes": 30661636,
+        "zip_sha256": "e87e810013b49756ab450349baa10ef939f7a1ddd0f68e4308fc5144efcf0735",
+        "stored_at": "2026-10-23T11:41:14.934933Z",
+        "download_path": "/api/v1/sessions/d405_1792750256071/archive",
+        "warnings": [
+          {
+            "code": "RGB_ENCODING_CHANNEL_MISMATCH",
+            "count": 33
+          }
+        ]
+      }
+    ],
+    "next_cursor": null
+  },
+  "download_headers": {
+    "date": "Fri, 23 Oct 2026 11:41:16 GMT",
+    "server": "uvicorn",
+    "content-length": "30661636",
+    "x-session-id": "d405_1792750256071",
+    "x-archive-sha256": "e87e810013b49756ab450349baa10ef939f7a1ddd0f68e4308fc5144efcf0735",
+    "cache-control": "no-transform",
+    "content-disposition": "attachment; filename=\"d405_1792750256071.zip\"",
+    "content-type": "application/zip"
+  },
+  "identical_downloads_verified": 2,
+  "not_found": {
+    "error": {
+      "code": "SESSION_NOT_FOUND",
+      "message": "Session not found"
+    }
+  },
+  "invalid_cursor": {
+    "error": {
+      "code": "INVALID_PAGINATION",
+      "message": "Invalid cursor"
+    }
+  },
+  "scope": "Real Uvicorn loopback HTTP. Android upload and actual PC GUI not exercised."
+}

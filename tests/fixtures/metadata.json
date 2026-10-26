@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "frame_id": "synthetic_000001",
+  "session_id": "synthetic_reference",
+  "specimen_id": null,
+  "source_path": "mobile_pc_replay",
+  "capture_source": "synthetic",
+  "provenance": {
+    "kind": "synthetic",
+    "camera": null,
+    "raw_file": null,
+    "raw_sha256": null,
+    "raw_unit": "mm",
+    "raw_scale_to_m": 0.001,
+    "synthetic_seed": 0,
+    "synthetic_config": "raw_mm=[[1000,1000],[1000,0]]; no mask or support plane"
+  },
+  "storage": {
+    "file": "arrays.npz",
+    "sha256": "fd1e1a0d2db6be06efaae3986fc3db18039f3daeb861ff7bfab1a8fd78c412fd",
+    "depth_key": "depth_m",
+    "valid_mask_key": "valid_mask",
+    "target_mask_key": null
+  },
+  "depth": {
+    "unit": "m",
+    "semantics": "optical_axis_z",
+    "dtype": "float32",
+    "height": 2,
+    "width": 2
+  },
+  "intrinsics": {
+    "width": 2,
+    "height": 2,
+    "fx": 100.0,
+    "fy": 100.0,
+    "cx": 0.0,
+    "cy": 0.0,
+    "model": "rectified_pinhole",
+    "calibration_id": "synthetic-pinhole-v1"
+  },
+  "capture_time": {
+    "ns": "1000000000",
+    "clock_domain": "synthetic_reference",
+    "origin": "synthetic"
+  },
+  "host_receive_time": {
+    "ns": null,
+    "clock_domain": null,
+    "origin": null
+  },
+  "replay_time": {
+    "ns": null,
+    "clock_domain": null,
+    "origin": null
+  },
+  "pose": null,
+  "imu": null,
+  "sync": {
+    "status": "missing",
+    "offset_ns": null,
+    "uncertainty_ns": null,
+    "tolerance_ns": null,
+    "evidence": null
+  },
+  "capture_conditions": {
+    "camera_distance_m": null,
+    "lighting": null,
+    "material": null,
+    "notes": "Synthetic interface test; excluded from accuracy metrics."
+  },
+  "target_mask_info": null,
+  "support_plane": null,
+  "volume_request": null
+}

@@ -1,0 +1,1006 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specimen_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "source_path": {
+      "enum": [
+        "robot",
+        "mobile_pc_replay",
+        "mobile_device"
+      ]
+    },
+    "capture_source": {
+      "enum": [
+        "robot",
+        "mobile_device",
+        "pc_camera",
+        "synthetic"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "real",
+            "synthetic"
+          ]
+        },
+        "camera": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "vendor": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "model": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "serial": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "firmware": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "sdk": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "depth_profile_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "vendor",
+                "model",
+                "serial",
+                "firmware",
+                "sdk",
+                "depth_profile_id"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "raw_file": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "raw_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "raw_unit": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "raw_scale_to_m": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          ]
+        },
+        "synthetic_seed": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0
+            }
+          ]
+        },
+        "synthetic_config": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "camera",
+        "raw_file",
+        "raw_sha256",
+        "raw_unit",
+        "raw_scale_to_m",
+        "synthetic_seed",
+        "synthetic_config"
+      ],
+      "additionalProperties": false
+    },
+    "storage": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "enum": [
+            "arrays.npz"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "depth_key": {
+          "enum": [
+            "depth_m"
+          ]
+        },
+        "valid_mask_key": {
+          "enum": [
+            "valid_mask"
+          ]
+        },
+        "target_mask_key": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "target_mask"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "file",
+        "sha256",
+        "depth_key",
+        "valid_mask_key",
+        "target_mask_key"
+      ],
+      "additionalProperties": false
+    },
+    "depth": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "enum": [
+            "m"
+          ]
+        },
+        "semantics": {
+          "enum": [
+            "optical_axis_z"
+          ]
+        },
+        "dtype": {
+          "enum": [
+            "float32"
+          ]
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "unit",
+        "semantics",
+        "dtype",
+        "height",
+        "width"
+      ],
+      "additionalProperties": false
+    },
+    "intrinsics": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fx": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fy": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "cx": {
+          "type": "number"
+        },
+        "cy": {
+          "type": "number"
+        },
+        "model": {
+          "enum": [
+            "rectified_pinhole"
+          ]
+        },
+        "calibration_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "fx",
+        "fy",
+        "cx",
+        "cy",
+        "model",
+        "calibration_id"
+      ],
+      "additionalProperties": false
+    },
+    "capture_time": {
+      "$ref": "#/$defs/stamp"
+    },
+    "host_receive_time": {
+      "$ref": "#/$defs/stamp"
+    },
+    "replay_time": {
+      "$ref": "#/$defs/stamp"
+    },
+    "pose": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/pose"
+        }
+      ]
+    },
+    "imu": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/imu"
+        }
+      ]
+    },
+    "sync": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "missing",
+            "unverified",
+            "verified"
+          ]
+        },
+        "offset_ns": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^-?[0-9]+$"
+            }
+          ]
+        },
+        "uncertainty_ns": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          ]
+        },
+        "tolerance_ns": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          ]
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "offset_ns",
+        "uncertainty_ns",
+        "tolerance_ns",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "capture_conditions": {
+      "type": "object",
+      "properties": {
+        "camera_distance_m": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          ]
+        },
+        "lighting": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "material": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "camera_distance_m",
+        "lighting",
+        "material",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "target_mask_info": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "source",
+            "version"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "support_plane": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/plane"
+        }
+      ]
+    },
+    "volume_request": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/volume_request"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "frame_id",
+    "session_id",
+    "specimen_id",
+    "source_path",
+    "capture_source",
+    "provenance",
+    "storage",
+    "depth",
+    "intrinsics",
+    "capture_time",
+    "host_receive_time",
+    "replay_time",
+    "pose",
+    "imu",
+    "sync",
+    "capture_conditions",
+    "target_mask_info",
+    "support_plane",
+    "volume_request"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "stamp": {
+      "type": "object",
+      "properties": {
+        "ns": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          ]
+        },
+        "clock_domain": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "origin": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "sensor",
+                "host_receive",
+                "synthetic",
+                "replay_host"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "ns",
+        "clock_domain",
+        "origin"
+      ],
+      "additionalProperties": false
+    },
+    "pose": {
+      "type": "object",
+      "properties": {
+        "from_frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "translation_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "quaternion_xyzw": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "ns": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[0-9]+$"
+                }
+              ]
+            },
+            "clock_domain": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "origin": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "sensor",
+                    "host_receive",
+                    "synthetic",
+                    "replay_host"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ns",
+            "clock_domain",
+            "origin"
+          ],
+          "additionalProperties": false
+        },
+        "calibration_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "from_frame",
+        "to_frame",
+        "translation_m",
+        "quaternion_xyzw",
+        "time",
+        "calibration_id"
+      ],
+      "additionalProperties": false
+    },
+    "plane": {
+      "type": "object",
+      "properties": {
+        "frame": {
+          "enum": [
+            "camera"
+          ]
+        },
+        "normal": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "offset_m": {
+          "type": "number"
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "frame",
+        "normal",
+        "offset_m",
+        "method",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "imu": {
+      "type": "object",
+      "properties": {
+        "frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "ns": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[0-9]+$"
+                }
+              ]
+            },
+            "clock_domain": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "origin": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "sensor",
+                    "host_receive",
+                    "synthetic",
+                    "replay_host"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "ns",
+            "clock_domain",
+            "origin"
+          ],
+          "additionalProperties": false
+        },
+        "accel_m_s2": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        },
+        "gyro_rad_s": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          ]
+        },
+        "orientation_xyzw": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
+            }
+          ]
+        },
+        "camera_to_imu": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "from_frame": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "to_frame": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "translation_m": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "quaternion_xyzw": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "time": {
+                  "type": "object",
+                  "properties": {
+                    "ns": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9]+$"
+                        }
+                      ]
+                    },
+                    "clock_domain": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      ]
+                    },
+                    "origin": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "enum": [
+                            "sensor",
+                            "host_receive",
+                            "synthetic",
+                            "replay_host"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ns",
+                    "clock_domain",
+                    "origin"
+                  ],
+                  "additionalProperties": false
+                },
+                "calibration_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "from_frame",
+                "to_frame",
+                "translation_m",
+                "quaternion_xyzw",
+                "time",
+                "calibration_id"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "frame",
+        "time",
+        "accel_m_s2",
+        "gyro_rad_s",
+        "orientation_xyzw",
+        "camera_to_imu"
+      ],
+      "additionalProperties": false
+    },
+    "volume_request": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "enum": [
+            "height_integration"
+          ]
+        },
+        "assumptions_confirmed": {
+          "type": "boolean"
+        },
+        "assumption_evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plane_basis": {
+          "type": "object",
+          "properties": {
+            "origin_m": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "u_axis": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "v_axis": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "origin_m",
+            "u_axis",
+            "v_axis"
+          ],
+          "additionalProperties": false
+        },
+        "footprint_polygon_uv_m": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "minItems": 3
+        },
+        "grid_pitch_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "method",
+        "assumptions_confirmed",
+        "assumption_evidence",
+        "plane_basis",
+        "footprint_polygon_uv_m",
+        "grid_pitch_m"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "title": "Injidong FramePacket v1.0.0"
+}
