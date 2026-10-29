@@ -28,6 +28,25 @@ vendored 공통 계약 검증기와 5개 schema는 기존 `injidong_contract_v1`
 
 ## API 계약
 
+### 기존 검토 포인트 클라우드 표시
+
+`GET /api/v1/pointclouds/review`는 기존 Bearer 인증을 적용해 기존 NPZ의 `points_m`과
+선택적 `rgb_u8`, `color_candidate`를 읽습니다. 색상 후보가 아닌 점은 기존 검토 뷰어처럼 회색으로 표시합니다.
+새 포인트를 생성하거나 원본을 수정하지 않습니다. 최대 250,000개 점을 지원합니다.
+
+`INJIDONG_REVIEW_FILE` 환경 변수 또는 `data/pointcloud-source.json`의 `file`에
+기존 `review_arrays.npz`의 절대 경로를 지정합니다. 현재 PC는 바탕화면 팀 검토 자료의
+`roi/mobile_29819/review_arrays.npz`로 설정되어 있습니다. 자료 이동 시 경로를 갱신하세요.
+API 코드를 적용하려면 서버를 재시작해야 합니다.
+
+응답은 `application/octet-stream`: ASCII `IPC1` 4바이트, little-endian uint32 점 개수,
+이어서 점마다 little-endian float32 6개(X, Y, Z 미터 및 R, G, B 0~1)입니다.
+원본 좌표·점 순서를 보존합니다. 앱이 표시할 때만 중심·크기를 정규화합니다.
+미설정/파일 없음은 404, 지원하지 않는 배열은 422를 반환합니다.
+
+기존 데이터 왕복 검증은 `INJIDONG_REVIEW_TEST_FILE`을 실제 NPZ 경로로 설정한 뒤
+`python -m unittest discover -s tests -v`로 실행합니다.
+
 | 메서드 | 경로 | 성공 |
 |---|---|---|
 | GET | `/health` | 200, DB 접근 확인 |

@@ -18,6 +18,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .validation import ID_PATTERN, MAX_ARCHIVE, InvalidArchive, inspect_archive
+from .pointcloud import router as pointcloud_router
 
 CHUNK = 65536
 
@@ -77,6 +78,7 @@ def create_app(data_dir=None, token=None):
     api = FastAPI(title='Injidong Session API', version='1.0.0',
                   description='Mobile 0.5.1 array ZIP upload and PC original archive download. See README for provisional policies.')
     api.add_middleware(RequestGate, token=token)
+    api.include_router(pointcloud_router(data))
 
     @api.exception_handler(StarletteHTTPException)
     async def http_error(request, exc):
