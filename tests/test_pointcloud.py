@@ -9,9 +9,42 @@ from unittest.mock import patch
 import numpy as np
 from fastapi.testclient import TestClient
 from app.main import create_app
+from test_api import archive
 
 
 class PointCloudTests(unittest.TestCase):
+    def test_session_result_pending_and_identity(self):
+        import hashlib
+        import io
+        import shutil
+        with tempfile.TemporaryDirectory() as data:
+            with TestClient(create_app(data, token='test-only')) as client:
+                endpoint = '/api/v1/sessions/test_1/pointcloud'
+                headers = {'Authorization': 'Bearer test-only'}
+                self.assertEqual(client.get(endpoint).status_code, 401)
+                self.assertEqual(client.get(endpoint, headers=headers).status_code, 404)
+                payload = archive()
+                response = client.post('/api/v1/sessions', headers=headers,
+                    data={'session_id': 'test_1', 'client_zip_size_bytes': str(len(payload)),
+                          'client_zip_sha256': hashlib.sha256(payload).hexdigest()},
+                    files={'zip': ('session.zip', io.BytesIO(payload), 'application/zip')})
+                self.assertEqual(response.status_code, 201)
+                pending = client.get(endpoint, headers=headers)
+                self.assertEqual(pending.status_code, 202)
+                self.assertEqual(pending.json()['session_id'], 'test_1')
+                # An existing global review must never substitute for this session's result.
+                source = os.environ.get('INJIDONG_REVIEW_TEST_FILE')
+                if source:
+                    (Path(data)/'pointcloud-source.json').write_text(json.dumps({'file': source}), encoding='utf-8')
+                    self.assertEqual(client.get(endpoint, headers=headers).status_code, 202)
+                    results = Path(data)/'pointclouds'
+                    results.mkdir()
+                    shutil.copyfile(source, results/'test_1.npz')
+                    ready = client.get(endpoint, headers=headers)
+                    self.assertEqual(ready.status_code, 200)
+                    self.assertEqual(ready.headers['X-Session-Id'], 'test_1')
+                    self.assertEqual(ready.content[:4], b'IPC1')
+                    self.assertEqual(client.get('/api/v1/sessions/other/pointcloud', headers=headers).status_code, 404)
     def test_auth_and_missing_source(self):
         with tempfile.TemporaryDirectory() as data, patch.dict(os.environ, {'INJIDONG_REVIEW_FILE': ''}):
             with TestClient(create_app(data, token='test-only')) as client:

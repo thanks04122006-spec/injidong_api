@@ -2,11 +2,13 @@
 import json
 import os
 import struct
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import numpy as np
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import Response
+from fastapi.responses import Response, JSONResponse
 
 MAX_POINTS = 250_000
 
@@ -23,6 +25,27 @@ def router(data):
                 source = json.loads(config.read_text('utf-8'))['file']
         if not source or not Path(source).is_file():
             raise HTTPException(404, detail={'code': 'POINTCLOUD_NOT_FOUND', 'message': 'Review file is not configured or unavailable'})
+        return encode(source)
+
+    @routes.get('/api/v1/sessions/{session_id}/pointcloud')
+    def session_cloud(session_id: str):
+        import re
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,128}', session_id):
+            raise HTTPException(400, detail={'code': 'INVALID_SESSION_ID', 'message': 'Invalid session ID'})
+        with closing(sqlite3.connect(Path(data) / 'sessions.sqlite3')) as connection:
+            found = connection.execute('SELECT 1 FROM sessions WHERE session_id=?', (session_id,)).fetchone()
+        if not found:
+            raise HTTPException(404, detail={'code': 'SESSION_NOT_FOUND', 'message': 'Session is not uploaded'})
+        source = Path(data) / 'pointclouds' / (session_id + '.npz')
+        if not source.is_file():
+            return JSONResponse({'session_id': session_id, 'status': 'pending'}, status_code=202,
+                                headers={'Retry-After': '3', 'Cache-Control': 'no-store'})
+        response = encode(source)
+        response.headers['X-Session-Id'] = session_id
+        response.headers['X-Pointcloud-Id'] = session_id
+        return response
+
+    def encode(source):
         try:
             with np.load(source, allow_pickle=False) as archive:
                 xyz = archive['points_m']

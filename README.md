@@ -28,6 +28,16 @@ vendored 공통 계약 검증기와 5개 schema는 기존 `injidong_contract_v1`
 
 ## API 계약
 
+### 업로드한 세션의 3D 결과
+
+`GET /api/v1/sessions/{session_id}/pointcloud` (기존 Bearer 인증):
+업로드되지 않은 세션은 404, 업로드됐지만 결과가 없으면 202와 `status=pending`,
+기존 결과가 있으면 IPC1 바이너리와 `X-Session-Id`를 반환합니다.
+결과 파일은 `data/pointclouds/{session_id}.npz`에 둡니다 (`points_m`, 선택적 `rgb_u8`·`color_candidate`).
+생산 측에서는 같은 세션의 기존 결과를 임시 경로에 완성한 뒤 원자적으로 해당 경로로 교체하세요.
+현재 생성기는 구현하지 않았습니다. 검토용 전역 파일로 대체하지 않으며 다른 세션 결과를 복사해 등록하면 안 됩니다.
+앱은 사용자가 수동 업로드한 뒤에만 조회를 시작하고 결과 준비 시 Depth 영역을 3D로 전환합니다.
+
 ### 기존 검토 포인트 클라우드 표시
 
 `GET /api/v1/pointclouds/review`는 기존 Bearer 인증을 적용해 기존 NPZ의 `points_m`과
